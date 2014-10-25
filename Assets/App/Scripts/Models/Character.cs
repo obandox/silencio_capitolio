@@ -18,12 +18,14 @@ public class Character : CharacterBase {
 	
 	// Update is called once per frame
 	void Update () {	
+		
+		if (controller.isGrounded) {
+			horizontalMove.x = Mathf.Clamp(horizontalMove.x, 0.5f, 1);
 			moveDirection = new Vector3(horizontalMove.x, 0, horizontalMove.z);
-		    moveDirection = transform.InverseTransformDirection(moveDirection);
+			moveDirection = transform.InverseTransformDirection(moveDirection);
 			moveDirection *= speed;	
-		if (controller.isGrounded) 
 			verticalMove= 0;
-		else
+		}else
 			verticalMove -= gravity * Time.deltaTime;
 		moveDirection.y = verticalMove;
 		controller.Move(moveDirection * Time.deltaTime);
@@ -33,7 +35,7 @@ public class Character : CharacterBase {
 	
 	public void Move(float horizontalX,float horizontalZ){	
 		horizontalMove.x+=horizontalX;
-		horizontalMove.x = Mathf.Clamp(horizontalMove.x, -1, 1);
+		horizontalMove.x = Mathf.Clamp(horizontalMove.x, 0.5f, 1);
 		horizontalMove.z+=horizontalZ;
 		horizontalMove.z = Mathf.Clamp(horizontalMove.z, -1, 1);
 	}

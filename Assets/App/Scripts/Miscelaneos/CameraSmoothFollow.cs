@@ -10,6 +10,8 @@ public class CameraSmoothFollow : MonoBehaviour {
 	public bool cameraFollowY = true; // camera follows on vertical
 	public bool cameraFollowHeight = true; // camera follow CameraTarget object height
 	public float cameraHeight = 2.5f; // height of camera adjustable
+	public float cameraLeftX = 0.0f; // left x of camera adjustable
+	public float cameraLeftZ = 0.0f; // left z of camera adjustable
 	public Vector2 velocity; // speed of camera movement
 	
 	private Vector3 clampPosition; // camera position
@@ -30,7 +32,7 @@ public class CameraSmoothFollow : MonoBehaviour {
 			clampPosition.y = Mathf.SmoothDamp (clampPosition.y, cameraTarget.transform.position.y, ref velocity.y, smoothTime);
 		}
 		if (cameraFollowHeight) {
-			thisTransform.position= new Vector3(clampPosition.x, clampPosition.y + cameraHeight,clampPosition.z);	;
+			thisTransform.position= new Vector3(clampPosition.x+cameraLeftX, clampPosition.y + cameraHeight,clampPosition.z+cameraLeftZ);	;
 		} else {
 			thisTransform.position = clampPosition;
 		}
