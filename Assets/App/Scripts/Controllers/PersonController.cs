@@ -3,8 +3,8 @@ using System.Collections;
 using System;
 
 public class PersonController  : Singleton<PersonController> {
-
-	public GameObject PersonPrefab;
+	
+	public GameObject[] PersonPrefab;
 	
 	public float IntervalSpawn = 5;	
 	public float TimeoutIntervalSpawn = 0.15f;
@@ -39,7 +39,7 @@ public class PersonController  : Singleton<PersonController> {
 	}
 
 	void AddPerson(){
-		Instantiate(PersonPrefab, new Vector3(
+		Instantiate(PersonPrefab[UnityEngine.Random.Range(0,PersonPrefab.Length)], new Vector3(
 			_player.transform.position.x + NumberSpawn + VectorDistanceSpawn.x, 
 			VectorDistanceSpawn.y, 
 			VectorDistanceSpawn.z + UnityEngine.Random.Range(-4.5f, 4.5f)
