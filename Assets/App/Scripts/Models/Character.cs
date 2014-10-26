@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Character : CharacterBase {
+public class Character : Singleton<Character> {
 
     public int canJump = 1;
     public float speed = 6.0F;
@@ -53,54 +53,55 @@ public class Character : CharacterBase {
 	}
 
 
-	public override void Left(){
+	public void Left(){
 		Move(-1,0);
 	}
 
-	public override void LeftUp(){		
+	public void LeftUp(){		
 		Move(-1,1);
 
 	}
 
-	public override void Up(){	
+	public void Up(){	
 		Move(0,1);
 	}
 
-	public override void RightUp(){
+	public void RightUp(){
 		Move(1,1);
 
 	}
 
-	public override void Right(){		
+	public void Right(){		
 		Move(1,0);
 	}
 
-	public override void RightDown(){		
+	public void RightDown(){		
 		Move(1,-1);
 	}
 
-	public override void Down(){	
+	public void Down(){	
 		Move(0,-1);		
 	}
 
 
-	public override void LeftDown(){
+	public void LeftDown(){
 		Move(-1,-1);		
 	}
 
-	public override void ButtonZ(){
+	public void ButtonZ(){
         Debug.Log("Attack 1");
 	}
 
-	public override void ButtonX(){
+	public void ButtonX(){
         Debug.Log("Attack 2");
+        AttackCollider.
 	}
 
-	public override void ButtonC(){
+	public void ButtonC(){
         Jump();
 	}
 
-	public override void ButtonV(){
+	public void ButtonV(){
 		//Application.Quit();
 	}
 }
