@@ -15,8 +15,9 @@ public class Character : Singleton<Character> {
 
 	private Vector3 horizontalMove ;
 	private float verticalMove = 0.0f;
-
+	
 	public PersonController personController;
+	public WorldController worldController;
 
 	void Start () {
 		personController = PersonController.Instance;
@@ -54,6 +55,10 @@ public class Character : Singleton<Character> {
 		}
 	}
 
+	public void kill(){
+		Debug.Log ("Game Over");
+		Destroy (gameObject);
+	}
 
 	public void Left(){
 		Move(-1,0);
