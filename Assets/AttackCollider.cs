@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AttackCollider : MonoBehaviour {
 
-    void OnCollisionEnter(Collision collision)
-    {
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            Debug.DrawRay(contact.point, contact.normal, Color.white);
+    public List<GameObject> Targets = new List<GameObject>();
+ 
+    void OnTriggerEnter(Collider other){
+        if (other.CompareTag("NPC")) {
+            GameObject Object = other.gameObject;
+            if(!Targets.Contains(Object)){
+                Targets.Add(Object);
+            }
         }
-        if (collision.relativeVelocity.magnitude > 2)
-            audio.Play();
-
     }
+ 
+    void OnTriggerExit(Collider other){
+        if (other.CompareTag("NPC")) {
+          GameObject Object = other.gameObject;
+          Targets.Remove(Object);
+        }
+    }
+
 
 }

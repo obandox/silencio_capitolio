@@ -8,7 +8,7 @@ public class Character : Singleton<Character> {
     public float jumpSpeed = 15.0F;
     public float gravity = 20.0F;
     public GameObject _AttackCollider;
-    private BoxCollider AttackCollider;
+    private AttackCollider AttackTargets;
     private Vector3 moveDirection = Vector3.zero;
 	private CharacterController controller;
 
@@ -17,7 +17,7 @@ public class Character : Singleton<Character> {
 
 	void Start () {		
 		controller = GetComponent<CharacterController>();
-        AttackCollider = _AttackCollider.GetComponent<BoxCollider>();
+        AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
 	}
 	
 	// Update is called once per frame
@@ -90,11 +90,18 @@ public class Character : Singleton<Character> {
 
 	public void ButtonZ(){
         Debug.Log("Attack 1");
+        foreach (GameObject target in AttackTargets.Targets)
+        {
+            //do shit
+        }
 	}
 
 	public void ButtonX(){
         Debug.Log("Attack 2");
-        AttackCollider.
+        foreach (GameObject target in AttackTargets.Targets)
+        {
+            //do shit
+        }
 	}
 
 	public void ButtonC(){
