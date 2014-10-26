@@ -2,14 +2,13 @@
 using System.Collections;
 
 public class Character : Singleton<Character> {
-	
-	public float speed = 0.0F;
-	
-	public float maxSpeed = 22.0F;
-	public float acceleration = 2.0F;
 
-    public float jumpSpeed = 8.0F;
+    public int canJump = 1;
+    public float speed = 6.0F;
+    public float jumpSpeed = 15.0F;
     public float gravity = 20.0F;
+    public GameObject _AttackCollider;
+    private AttackCollider AttackTargets;
     private Vector3 moveDirection = Vector3.zero;
 	private CharacterController controller;
 
@@ -22,18 +21,19 @@ public class Character : Singleton<Character> {
 	void Start () {
 		personController = PersonController.Instance;
 		controller = GetComponent<CharacterController>();
+        AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
 	}
 	
 	// Update is called once per frame
-	void Update () {			
-		speed += acceleration * Time.deltaTime;
-		speed = Mathf.Clamp (speed, 0, maxSpeed);
+	void Update () {	
+		
 		if (controller.isGrounded) {
 			horizontalMove.x = Mathf.Clamp(horizontalMove.x, 0.5f, 1);
 			moveDirection = new Vector3(horizontalMove.x, 0, horizontalMove.z);
 			moveDirection = transform.InverseTransformDirection(moveDirection);
 			moveDirection *= speed;	
 			verticalMove= 0;
+            canJump = 1;
 		}else
 			verticalMove -= gravity * Time.deltaTime;
 		moveDirection.y = verticalMove;
@@ -48,11 +48,12 @@ public class Character : Singleton<Character> {
 		horizontalMove.z+=horizontalZ;
 		horizontalMove.z = Mathf.Clamp(horizontalMove.z, -1, 1);
 	}
-	public void Jump(){	
-		if (controller.isGrounded) {	
-			verticalMove += jumpSpeed;
-			verticalMove = Mathf.Clamp (verticalMove, 0, jumpSpeed);
-		}
+	public void Jump(){
+        if (canJump == 0) return;
+        Debug.Log("JUMP!");
+		verticalMove += jumpSpeed;
+		verticalMove = Mathf.Clamp (verticalMove, 0, jumpSpeed);
+        canJump--;
 	}
 
 	public void kill(){
@@ -96,18 +97,26 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonZ(){
-
+        Debug.Log("Attack 1");
+        foreach (GameObject target in AttackTargets.Targets)
+        {
+            //do shit
+        }
 	}
 
 	public void ButtonX(){
-
+        Debug.Log("Attack 2");
+        foreach (GameObject target in AttackTargets.Targets)
+        {
+            //do shit
+        }
 	}
 
 	public void ButtonC(){
-
+        Jump();
 	}
 
 	public void ButtonV(){
-		Application.Quit();
+		//Application.Quit();
 	}
 }
