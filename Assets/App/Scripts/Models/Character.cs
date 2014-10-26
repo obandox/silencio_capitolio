@@ -2,8 +2,12 @@
 using System.Collections;
 
 public class Character : Singleton<Character> {
+	
+	public float speed = 0.0F;
+	
+	public float maxSpeed = 22.0F;
+	public float acceleration = 2.0F;
 
-    public float speed = 6.0F;
     public float jumpSpeed = 8.0F;
     public float gravity = 20.0F;
     private Vector3 moveDirection = Vector3.zero;
@@ -17,8 +21,9 @@ public class Character : Singleton<Character> {
 	}
 	
 	// Update is called once per frame
-	void Update () {	
-		
+	void Update () {			
+		speed += acceleration * Time.deltaTime;
+		speed = Mathf.Clamp (speed, 0, maxSpeed);
 		if (controller.isGrounded) {
 			horizontalMove.x = Mathf.Clamp(horizontalMove.x, 0.5f, 1);
 			moveDirection = new Vector3(horizontalMove.x, 0, horizontalMove.z);
