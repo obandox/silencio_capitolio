@@ -16,7 +16,10 @@ public class Character : Singleton<Character> {
 	private Vector3 horizontalMove ;
 	private float verticalMove = 0.0f;
 
-	void Start () {		
+	public PersonController personController;
+
+	void Start () {
+		personController = PersonController.Instance;
 		controller = GetComponent<CharacterController>();
 	}
 	

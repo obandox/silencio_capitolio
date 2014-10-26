@@ -9,7 +9,6 @@ public class Person : MonoBehaviour {
 	
 	private Character _player;
 	private Vector3 horizontalMove ;
-	private float verticalMove = 0.0f;
 	
 	private Vector3 _position;
 
@@ -30,6 +29,9 @@ public class Person : MonoBehaviour {
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;		
 		transform.position = _position;
+		if (_player.transform.position.x - _position.x > 35) {
+			Destroy(gameObject);
+		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
@@ -45,8 +47,7 @@ public class Person : MonoBehaviour {
 		if (other.tag.ToLower() == "player") {
 			//GameObject player = other.gameObject;
 			_player.speed = _player.speed - _player.speed * speedPenality;
-			
-			Debug.Log ("SPEED "+_player.speed);
+
 		}
 	}
 
