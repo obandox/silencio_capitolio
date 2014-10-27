@@ -15,6 +15,7 @@ public class PersonController  : Singleton<PersonController> {
 
 	private float _CurrentInterval = 0;
 	private Character _player;
+	private float lastSpawnX = 0;
 	
 	// Use this for initialization
 	void Start () {
@@ -24,9 +25,9 @@ public class PersonController  : Singleton<PersonController> {
 	// Update is called once per frame
 	void Update () {
 		_CurrentInterval -= Time.deltaTime;
-		if (_CurrentInterval <= 0) {
-
-			AddPersons(NumberSpawn);			
+		if (_CurrentInterval <= 0 && Mathf.Abs(lastSpawnX - _player.transform.position.x) > 35) {
+			AddPersons(NumberSpawn);
+			lastSpawnX=_player.transform.position.x;
 			_CurrentInterval = IntervalSpawn;
 		}
 	}
