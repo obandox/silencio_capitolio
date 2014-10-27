@@ -5,6 +5,7 @@ public class Character : Singleton<Character> {
 
     public int canJump = 1;
     public float speed = 6.0F;
+    public float verticalSpeed = 10f;
     public float jumpSpeed = 15.0F;
     public float gravity = 20.0F;
 	
@@ -34,22 +35,22 @@ public class Character : Singleton<Character> {
 	// Update is called once per frame
 	void Update () {
 		speed += acceleration * Time.deltaTime;
-		speed = Mathf.Clamp (speed, 0, maxSpeed);
+        speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
+        speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
 
 		if (controller.isGrounded) {
-			horizontalMove.x = Mathf.Clamp(horizontalMove.x, 0.5f, 1);
-			moveDirection = new Vector3(horizontalMove.x, 0, horizontalMove.z);
+            moveDirection = new Vector3(speed, 0, horizontalMove.z * verticalSpeed);
 			moveDirection = transform.InverseTransformDirection(moveDirection);
-			moveDirection *= speed;	
 			verticalMove= 0;
             canJump = 1;
-		}else
-			verticalMove -= gravity * Time.deltaTime;
+		}
+        else verticalMove -= gravity * Time.deltaTime;
+
 		moveDirection.y = verticalMove;
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
-        LegAnimator.speed = speed / 10f;
+        LegAnimator.speed = speed / maxSpeed * 2;
 	}
 	
 	public void Move(float horizontalX,float horizontalZ){	
