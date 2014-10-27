@@ -31,7 +31,7 @@ public class WorldController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (lastX <= _player.transform.position.x + 40) {
+		if (_player != null && lastX <= _player.transform.position.x + 40) {
 			AddColumn();
 		}
 	}

@@ -11,7 +11,9 @@ public class Character : Singleton<Character> {
 	public float maxSpeed = 22.0F;
 	public float acceleration = 2.0F;
 
+    public GameObject _LegObject;
     public GameObject _AttackCollider;
+    private Animator LegAnimator;
     private AttackCollider AttackTargets;
     private Vector3 moveDirection = Vector3.zero;
 	private CharacterController controller;
@@ -26,11 +28,11 @@ public class Character : Singleton<Character> {
 		personController = PersonController.Instance;
 		controller = GetComponent<CharacterController>();
         AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
+        LegAnimator = _LegObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
-	void Update () {	
-		
+	void Update () {
 		speed += acceleration * Time.deltaTime;
 		speed = Mathf.Clamp (speed, 0, maxSpeed);
 
@@ -47,6 +49,7 @@ public class Character : Singleton<Character> {
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
+        LegAnimator.speed = speed / 10f;
 	}
 	
 	public void Move(float horizontalX,float horizontalZ){	

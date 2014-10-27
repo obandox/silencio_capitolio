@@ -29,7 +29,7 @@ public class Person : MonoBehaviour {
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;		
 		transform.position = _position;
-		if (_player.transform.position.x - _position.x > 35) {
+		if (_player != null && _player.transform.position.x - _position.x > 35) {
 			Destroy(gameObject);
 		}
 	}

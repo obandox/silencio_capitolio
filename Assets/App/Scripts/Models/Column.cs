@@ -10,8 +10,8 @@ public class Column : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {		
-		if (_player.transform.position.x - transform.position.x > 35) {
+	void Update () {
+		if (_player != null && _player.transform.position.x - transform.position.x > 35) {
 			Destroy(gameObject);
 		}
 	}

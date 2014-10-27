@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (_player == null) return;
 		Vector3 playerPosition = _player.transform.position;
 		float currentDistance = Mathf.Abs(playerPosition.x - _position.x);
 
