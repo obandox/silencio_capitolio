@@ -110,16 +110,18 @@ public class Character : Singleton<Character> {
 	public void ButtonZ(){
         Debug.Log("Attack 1");
         foreach (GameObject target in AttackTargets.Targets)
-        {
-            //do shit
+		{	if(target == null) continue;
+			Person person = target.GetComponent<Person>();
+			if(person != null) person.kill();
         }
 	}
 
 	public void ButtonX(){
         Debug.Log("Attack 2");
         foreach (GameObject target in AttackTargets.Targets)
-        {
-            //do shit
+		{   if(target == null) continue;
+			Person person = target.GetComponent<Person>();
+			if(person != null) person.kill();
         }
 	}
 
@@ -128,6 +130,7 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonV(){
-		//Application.Quit();
+		//leave britney alone
+		Application.Quit();
 	}
 }

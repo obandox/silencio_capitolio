@@ -7,10 +7,10 @@ public class Person : MonoBehaviour {
 	public float speedPenality = 0.3f;
 	public float gravity = 20.0F;
 	
-	private Character _player;
-	private Vector3 horizontalMove ;
+	protected Character _player;
+	protected Vector3 horizontalMove ;
 	
-	private Vector3 _position;
+	protected Vector3 _position;
 
 	// Use this for initialization
 	void Start () {
@@ -50,6 +50,8 @@ public class Person : MonoBehaviour {
 
 		}
 	}
-
+	public virtual void kill(){
+		Destroy (gameObject);
+	}
 
 }

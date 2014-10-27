@@ -26,7 +26,6 @@ public class Column : MonoBehaviour {
 	}
 	
 	void CollisionCallback(Collider other){
-		Debug.Log (other);
 		if (other.tag.ToLower() == "player") {
 			//GameObject player = other.gameObject;
 			_player.kill();
