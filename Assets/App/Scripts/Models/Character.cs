@@ -63,8 +63,8 @@ public class Character : Singleton<Character> {
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
         LegAnimator.speed = speed / maxSpeed * 2;
-        if (lastRightAttack < Time.time) ArmAnimator.SetBool("ataqueder", false);
-        if (lastLeftAttack < Time.time) ArmAnimator.SetBool("ataqueizq", false);
+        if (lastRightAttack - attackTime + 0.2f < Time.time) ArmAnimator.SetBool("ataqueder", false);
+        if (lastLeftAttack - attackTime + 0.2f < Time.time) ArmAnimator.SetBool("ataqueizq", false);
 	}
 	
 	public void Move(float horizontalX,float horizontalZ){	
