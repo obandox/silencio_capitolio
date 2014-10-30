@@ -69,7 +69,7 @@ public class Character : Singleton<Character> {
 
 	public void kill(){
 		Debug.Log ("Game Over");
-		Destroy (gameObject);
+		//Destroy (gameObject);
 	}
 
 	public void Left(){
