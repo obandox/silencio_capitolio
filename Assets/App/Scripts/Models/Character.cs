@@ -32,7 +32,7 @@ public class Character : Singleton<Character> {
 	
 	public PersonController personController;
 	public WorldController worldController;
-	public bool active = true;
+	public bool _active = true;
 
 	void Start () {
 		personController = PersonController.Instance;
@@ -45,13 +45,15 @@ public class Character : Singleton<Character> {
 	
 	// Update is called once per frame
 	void Update () {
-		if(active){			
+		if(_active){			
 			speed += acceleration * Time.deltaTime;
 	        speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
-	        speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
+			speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
+			LegAnimator.speed = speed / maxSpeed * 2;
 		}else{
-			speed -= acceleration * Time.deltaTime * 2;
-	        speed = Mathf.Clamp(speed, 0, maxSpeed);
+			speed -= acceleration * Time.deltaTime *0.366f;
+			speed = Mathf.Clamp(speed, 0, maxSpeed);
+			LegAnimator.speed = 0;
 
 		}
 		if (controller.isGrounded) {
@@ -69,7 +71,6 @@ public class Character : Singleton<Character> {
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
-        LegAnimator.speed = speed / maxSpeed * 2;
         if (lastRightAttack < Time.time) ArmAnimator.SetBool("ataqueder", false);
         if (lastLeftAttack < Time.time) ArmAnimator.SetBool("ataqueizq", false);
 	}
@@ -91,61 +92,66 @@ public class Character : Singleton<Character> {
 	}
 
 	public void kill(){
-		Debug.Log ("Game Over");
-		//Destroy (gameObject);
+		_active = false;
+		ArmAnimator.speed = 0;
+
+		transform.eulerAngles = new Vector3(0,0,-90);
+
 	}
 
+
 	public void stop(){
-		active = false;
+		_active = false;
+		ArmAnimator.speed = 0;
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
 	}
-	
+
 	public void Left(){
-		if(!active) return;
+		if(!_active) return;
 		Move(-1,0);
 	}
 
 	public void LeftUp(){	
-		if(!active) return;	
+		if(!_active) return;	
 		Move(-1,1);
 
 	}
 
 	public void Up(){	
-		if(!active) return;
+		if(!_active) return;
 		Move(0,1);
 	}
 
 	public void RightUp(){
-		if(!active) return;
+		if(!_active) return;
 		Move(1,1);
 
 	}
 
 	public void Right(){
-		if(!active) return;		
+		if(!_active) return;		
 		Move(1,0);
 	}
 
 	public void RightDown(){
-		if(!active) return;		
+		if(!_active) return;		
 		Move(1,-1);
 	}
 
 	public void Down(){	
-		if(!active) return;
+		if(!_active) return;
 		Move(0,-1);		
 	}
 
 
 	public void LeftDown(){
-		if(!active) return;
+		if(!_active) return;
 		Move(-1,-1);		
 	}
 
 	public void ButtonZ(){
-		if(!active) return;
+		if(!_active) return;
         if (lastLeftAttack > Time.time) return;
         Debug.Log("Attack Left");
         ArmAnimator.SetBool("ataqueder", false);
@@ -164,7 +170,7 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonX(){
-		if(!active) return;
+		if(!_active) return;
         if (lastRightAttack > Time.time) return;
         Debug.Log("Attack Right");
         bool FoundTarget = false;
@@ -183,12 +189,12 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonC(){
-		if(!active) return;
+		if(!_active) return;
         Jump();
 	}
 
 	public void ButtonV(){
-		if(!active) return;
+		if(!_active) return;
 		//leave britney alone
 		Application.Quit();
 	}
