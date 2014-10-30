@@ -12,9 +12,15 @@ public class Character : Singleton<Character> {
 	public float maxSpeed = 22.0F;
 	public float acceleration = 2.0F;
 
+    public float attackTime = .5f;
+    public float lastLeftAttack = 0f;
+    public float lastRightAttack = 0f;
+
     public GameObject _LegObject;
+    public GameObject _ArmObject;
     public GameObject _AttackCollider;
     private Animator LegAnimator;
+    private Animator ArmAnimator;
     private AttackCollider AttackTargets;
     private Vector3 moveDirection = Vector3.zero;
 	private CharacterController controller;
@@ -30,6 +36,7 @@ public class Character : Singleton<Character> {
 		controller = GetComponent<CharacterController>();
         AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
         LegAnimator = _LegObject.GetComponent<Animator>();
+        ArmAnimator = _ArmObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -37,16 +44,18 @@ public class Character : Singleton<Character> {
 		speed += acceleration * Time.deltaTime;
         speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
         speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
-
 		if (controller.isGrounded) {
-            moveDirection = new Vector3(speed, 0, horizontalMove.z * verticalSpeed);
+            LegAnimator.SetBool("jumping", false);
+            ArmAnimator.SetBool("jumping", false);
+            moveDirection = new Vector3(speed, 0, 0);
 			moveDirection = transform.InverseTransformDirection(moveDirection);
 			verticalMove= 0;
             canJump = 1;
 		}
         else verticalMove -= gravity * Time.deltaTime;
-
+        moveDirection.z = horizontalMove.z * verticalSpeed;
 		moveDirection.y = verticalMove;
+        moveDirection = transform.InverseTransformDirection(moveDirection);
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
@@ -62,6 +71,8 @@ public class Character : Singleton<Character> {
 	public void Jump(){
         if (canJump == 0) return;
         Debug.Log("JUMP!");
+        LegAnimator.SetBool("jumping", true);
+        ArmAnimator.SetBool("jumping", true);
 		verticalMove += jumpSpeed;
 		verticalMove = Mathf.Clamp (verticalMove, 0, jumpSpeed);
         canJump--;
@@ -108,21 +119,25 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonZ(){
-        Debug.Log("Attack 1");
+        if (lastLeftAttack > Time.time) return;
+        Debug.Log("Attack Left");
         foreach (GameObject target in AttackTargets.Targets)
 		{	if(target == null) continue;
 			Person person = target.GetComponent<Person>();
 			if(person != null) person.kill();
         }
+        lastLeftAttack = Time.time + attackTime;
 	}
 
 	public void ButtonX(){
-        Debug.Log("Attack 2");
+        if (lastRightAttack > Time.time) return;
+        Debug.Log("Attack Right");
         foreach (GameObject target in AttackTargets.Targets)
 		{   if(target == null) continue;
 			Person person = target.GetComponent<Person>();
 			if(person != null) person.kill();
         }
+        lastRightAttack = Time.time + attackTime;
 	}
 
 	public void ButtonC(){
