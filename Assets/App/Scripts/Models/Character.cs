@@ -96,8 +96,9 @@ public class Character : Singleton<Character> {
 	public void kill(){
 		_active = false;
 		ArmAnimator.speed = 0;
-		transform.localEulerAngles  = new Vector3(0,0,-90);
-		transform.eulerAngles = new Vector3(0,0,-90);
+		Vector3 pos = transform.position;
+		pos.y += 1000;
+		transform.LookAt (pos);
 
 	}
 
