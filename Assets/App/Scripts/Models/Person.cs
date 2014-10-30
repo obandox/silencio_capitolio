@@ -9,6 +9,7 @@ public class Person : MonoBehaviour {
 	public float gravity = 20.0F;
     public bool dead = false;
     public bool isGrounded = true;
+    //private Animator _Animator;
     private Vector3 moveDirection = Vector3.zero;
 	
 	protected Character _player;
@@ -20,16 +21,20 @@ public class Person : MonoBehaviour {
 	void Start () {
 		_player = Character.Instance;
 		_position = transform.position;
+        //_Animator = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //_Animator.SetBool("dead", dead);
+        //_Animator.SetBool("isflying", !isGrounded);
+        if (!isGrounded) verticalMove -= gravity * Time.deltaTime;
+        else verticalMove = 0f;
         if (dead)
         {
             if (!isGrounded)
             {
                 moveDirection = new Vector3();
-                verticalMove -= gravity * Time.deltaTime;
                 moveDirection.y = verticalMove;
                 moveDirection.x = 1;
                 moveDirection = transform.InverseTransformDirection(moveDirection);

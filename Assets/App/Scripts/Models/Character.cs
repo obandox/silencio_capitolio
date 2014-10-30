@@ -71,8 +71,10 @@ public class Character : Singleton<Character> {
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
+		
         if (lastRightAttack < Time.time) ArmAnimator.SetBool("ataqueder", false);
         if (lastLeftAttack < Time.time) ArmAnimator.SetBool("ataqueizq", false);
+
 	}
 	
 	public void Move(float horizontalX,float horizontalZ){	
