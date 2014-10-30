@@ -16,6 +16,8 @@ public class Character : Singleton<Character> {
     public float lastLeftAttack = 0f;
     public float lastRightAttack = 0f;
 
+    public GameObject _SoundController;
+    private SoundController SoundPlayer;
     public GameObject _LegObject;
     public GameObject _ArmObject;
     public GameObject _AttackCollider;
@@ -37,6 +39,7 @@ public class Character : Singleton<Character> {
         AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
         LegAnimator = _LegObject.GetComponent<Animator>();
         ArmAnimator = _ArmObject.GetComponent<Animator>();
+        SoundPlayer = _SoundController.GetComponent<SoundController>();
 	}
 	
 	// Update is called once per frame
@@ -60,6 +63,8 @@ public class Character : Singleton<Character> {
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
         LegAnimator.speed = speed / maxSpeed * 2;
+        if (lastRightAttack < Time.time) ArmAnimator.SetBool("ataqueder", false);
+        if (lastLeftAttack < Time.time) ArmAnimator.SetBool("ataqueizq", false);
 	}
 	
 	public void Move(float horizontalX,float horizontalZ){	
@@ -121,22 +126,36 @@ public class Character : Singleton<Character> {
 	public void ButtonZ(){
         if (lastLeftAttack > Time.time) return;
         Debug.Log("Attack Left");
+        ArmAnimator.SetBool("ataqueder", false);
+        ArmAnimator.SetBool("ataqueizq", true);
+        bool FoundTarget = false;
         foreach (GameObject target in AttackTargets.Targets)
-		{	if(target == null) continue;
+		{	
+            if(target == null) continue;
+            FoundTarget = true;
 			Person person = target.GetComponent<Person>();
 			if(person != null) person.kill();
         }
+        if (FoundTarget) SoundPlayer.PlayPunchSound();
+        else SoundPlayer.PlaySwingSound();
         lastLeftAttack = Time.time + attackTime;
 	}
 
 	public void ButtonX(){
         if (lastRightAttack > Time.time) return;
         Debug.Log("Attack Right");
+        bool FoundTarget = false;
+        ArmAnimator.SetBool("ataqueder", true);
+        ArmAnimator.SetBool("ataqueizq", false);
         foreach (GameObject target in AttackTargets.Targets)
-		{   if(target == null) continue;
+		{   
+            if(target == null) continue;
+            FoundTarget = true;
 			Person person = target.GetComponent<Person>();
 			if(person != null) person.kill();
         }
+        if (FoundTarget) SoundPlayer.PlayPunchSound();
+        else SoundPlayer.PlaySwingSound();
         lastRightAttack = Time.time + attackTime;
 	}
 
