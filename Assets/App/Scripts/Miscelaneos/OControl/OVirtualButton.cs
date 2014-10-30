@@ -14,7 +14,7 @@ public class OVirtualButton {
 	public  OControl.ScreenPosition fromPosition;
 	public  Vector2 position;
 	public  float   extendRect = 3.0F;	
-	public  float   timeToRelease = 0.1F;	
+	public  float   timeToRelease = 0.3F;	
 
 
 	private Rect    button_rect;
@@ -118,13 +118,13 @@ public class OVirtualButton {
 
 	}
 	public void Update(){
-		if(Input.GetKey(keyboard)){
-			Using (true);
-		}
 		if (timeUnusing <= 0) {
 			Using(false);
 		}else{
 			timeUnusing-=Time.deltaTime;
+		}
+		if (Input.GetKey (keyboard)) {
+			Using (true);
 		}
 
 	}

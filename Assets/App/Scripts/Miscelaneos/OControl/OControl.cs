@@ -57,6 +57,41 @@ public class OControl : MonoBehaviour {
 		}
 		return false;
 	}
+	
+	public static bool GetButton(string name){
+		if (Shared == null)
+						return false;
+		if(name == "Up"){
+			return Shared.VirtualJoystick.Vertical() > 0.4;
+		}else
+		if(name == "Left"){
+			return Shared.VirtualJoystick.Horizontal() < -0.4;
+		}else
+		if(name == "Down"){
+			return Shared.VirtualJoystick.Vertical() < -0.4;
+		}else
+		if(name == "Right"){
+			return Shared.VirtualJoystick.Horizontal() > 0.4;
+		}else
+		if(name == "Click"){
+			return Shared.ClickDown;
+		}else{
+			
+			foreach(OVirtualButton button in Shared.buttons){
+				if(button.name == name){
+					bool usingB = button.Using();
+					if(usingB){
+						Debug.Log("name "+button.name+" -- "+name);
+						Debug.Log(usingB);
+						button.Using(false);
+						return true;
+					} 
+				}
+			}
+
+		}
+		return false;
+	}
 
 	public static GameObject GetGameObject(){
 		if(Shared==null) return null;
