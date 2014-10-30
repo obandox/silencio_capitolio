@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WorldController : MonoBehaviour {
+public class WorldController : Singleton<WorldController> {
 
 	public enum WorldState{Init, Loop, Last, End};
 
@@ -102,7 +102,7 @@ public class WorldController : MonoBehaviour {
 		Debug.Log("END");
 	}
 
-	void gameover(){
+	public void gameover(){
 		StartCoroutine (reload());
 	}
 	IEnumerator reload(){

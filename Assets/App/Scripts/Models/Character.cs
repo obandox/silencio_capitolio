@@ -36,6 +36,7 @@ public class Character : Singleton<Character> {
 
 	void Start () {
 		personController = PersonController.Instance;
+		worldController = WorldController.Instance;
 		controller = GetComponent<CharacterController>();
         AttackTargets = _AttackCollider.GetComponent<AttackCollider>();
         LegAnimator = _LegObject.GetComponent<Animator>();
@@ -99,7 +100,7 @@ public class Character : Singleton<Character> {
 		Vector3 pos = transform.position;
 		pos.y += 1000;
 		transform.LookAt (pos);
-
+		WorldController.Instance.gameover ();
 	}
 
 
