@@ -50,25 +50,32 @@ public class Character : Singleton<Character> {
 			speed += acceleration * Time.deltaTime;
 	        speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
 			speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
+			if(LegAnimator != null)
 			LegAnimator.speed = speed / maxSpeed * 2;
 		}else{
 			speed -= acceleration * Time.deltaTime *0.366f;
 			speed = Mathf.Clamp(speed, 0, maxSpeed);
-			LegAnimator.speed = 0;
+				LegAnimator.speed = 0;
 
 		}
 		if (controller.isGrounded) {
-            LegAnimator.SetBool("jumping", false);
-            ArmAnimator.SetBool("jumping", false);
-            moveDirection = new Vector3(speed, 0, 0);
-			//moveDirection = transform.InverseTransformDirection(moveDirection);
-			verticalMove= 0;
-            canJump = 1;
-		}
-        else verticalMove -= gravity * Time.deltaTime;
+						LegAnimator.SetBool ("jumping", false);
+						ArmAnimator.SetBool ("jumping", false);
+						moveDirection = new Vector3 (speed, 0, 0);
+						//moveDirection = transform.InverseTransformDirection(moveDirection);
+						verticalMove = 0;
+						canJump = 1;
+		} else {
+			verticalMove -= gravity * Time.deltaTime;
+			if(!_active){
+				verticalMove = Mathf.Clamp(verticalMove,0,20);				
+				moveDirection = new Vector3 (speed, 0, 0);
+			}
+			 
+		} 
         moveDirection.z = horizontalMove.z * verticalSpeed;
 		moveDirection.y = verticalMove;
-        moveDirection = transform.InverseTransformDirection(moveDirection);
+        //moveDirection = transform.InverseTransformDirection(moveDirection);
 		controller.Move(moveDirection * Time.deltaTime);
 		horizontalMove.x = 0;
 		horizontalMove.z = 0;
@@ -99,7 +106,7 @@ public class Character : Singleton<Character> {
 		LegAnimator.speed = 0;
 		ArmAnimator.speed = 0;
 		GetComponent<Animator> ().enabled = false;
-
+		Destroy (AttackTargets.gameObject);
 		transform.eulerAngles = new Vector3 (0,0,90);
 		Util.SetTimeout (()=>{
 			WorldController.Instance.gameover ();
