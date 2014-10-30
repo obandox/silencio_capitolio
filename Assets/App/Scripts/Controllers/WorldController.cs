@@ -94,8 +94,6 @@ public class WorldController : MonoBehaviour {
 		if(!something)
 			CurrentTimerTap += TimerTapRecover * Time.deltaTime;
 
-		Debug.Log("CurrentTimerTap: "+CurrentTimerTap);
-
 		CurrentTimerTap = Mathf.Clamp(CurrentTimerTap, 0, TimerTap);
 		if(CurrentTimerTap <= 0) 
 			status = WorldState.End;
@@ -104,6 +102,13 @@ public class WorldController : MonoBehaviour {
 		Debug.Log("END");
 	}
 
+	void gameover(){
+		StartCoroutine (reload());
+	}
+	IEnumerator reload(){
+		yield return new WaitForSeconds (5);  // or however long you want it to wait
+		Application.LoadLevel(Application.loadedLevel);
+	}
 	float AddColumn(){
 		lastX += ColumnsDistance;
 		Instantiate(ColumnPrefabs[UnityEngine.Random.Range(0,ColumnPrefabs.Length)], new Vector3(
