@@ -61,7 +61,7 @@ public class Character : Singleton<Character> {
             LegAnimator.SetBool("jumping", false);
             ArmAnimator.SetBool("jumping", false);
             moveDirection = new Vector3(speed, 0, 0);
-			moveDirection = transform.InverseTransformDirection(moveDirection);
+			//moveDirection = transform.InverseTransformDirection(moveDirection);
 			verticalMove= 0;
             canJump = 1;
 		}
@@ -96,11 +96,14 @@ public class Character : Singleton<Character> {
 
 	public void kill(){
 		_active = false;
+		LegAnimator.speed = 0;
 		ArmAnimator.speed = 0;
-		Vector3 pos = transform.position;
-		pos.y += 1000;
-		transform.LookAt (pos);
-		WorldController.Instance.gameover ();
+		GetComponent<Animator> ().enabled = false;
+
+		transform.eulerAngles = new Vector3 (0,0,90);
+		Util.SetTimeout (()=>{
+			WorldController.Instance.gameover ();
+		},2);
 	}
 
 
@@ -185,6 +188,7 @@ public class Character : Singleton<Character> {
             if(target == null) continue;
             FoundTarget = true;
 			Person person = target.GetComponent<Person>();
+			
 			if(person != null) person.kill();
         }
         if (FoundTarget) SoundPlayer.PlayPunchSound();

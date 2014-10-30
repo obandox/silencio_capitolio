@@ -7,6 +7,7 @@ public class Police : Person {
 	bool playerInCollider;
 	bool aproachToPlayer = false;
 	bool attack = false;
+	bool playerKilled = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -73,13 +74,18 @@ public class Police : Person {
                     aproachToPlayer = true;
                     isGrounded = false;
                 }
-                if (absDistance <= 2)
+                if (absDistance <= 1)
                 {
                     attack = true;
                 }
             }
         }
-        transform.position = _position;
+		if (!playerKilled)
+						transform.position = _position;
+		else {
+			transform.eulerAngles = new Vector3(0,0, 90);
+			transform.position = _player.transform.position;
+		}
     }
 	
 	void OnCollisionEnter(Collision collision) {
@@ -99,9 +105,11 @@ public class Police : Person {
 	}
 
 	void Attack(){
+		if (dead) return;
         if (playerInCollider)
         {
             _player.kill();
+			playerKilled = true;
             attack = false;
             dead = true;
         }

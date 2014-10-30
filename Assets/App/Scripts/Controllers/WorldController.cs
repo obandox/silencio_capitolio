@@ -105,10 +105,12 @@ public class WorldController : Singleton<WorldController> {
 	public void gameover(){
 		StartCoroutine (reload());
 	}
+
 	IEnumerator reload(){
-		yield return new WaitForSeconds (5);  // or however long you want it to wait
+		yield return new WaitForSeconds (10);  // or however long you want it to wait
 		Application.LoadLevel(Application.loadedLevel);
 	}
+
 	float AddColumn(){
 		lastX += ColumnsDistance;
 		Instantiate(ColumnPrefabs[UnityEngine.Random.Range(0,ColumnPrefabs.Length)], new Vector3(
