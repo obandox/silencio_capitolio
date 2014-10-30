@@ -32,6 +32,7 @@ public class Character : Singleton<Character> {
 	
 	public PersonController personController;
 	public WorldController worldController;
+	public bool active = true;
 
 	void Start () {
 		personController = PersonController.Instance;
@@ -44,9 +45,15 @@ public class Character : Singleton<Character> {
 	
 	// Update is called once per frame
 	void Update () {
-		speed += acceleration * Time.deltaTime;
-        speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
-        speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
+		if(active){			
+			speed += acceleration * Time.deltaTime;
+	        speed *= Mathf.Clamp(horizontalMove.x, 0.5f, 1);
+	        speed = Mathf.Clamp(speed, maxSpeed / 2, maxSpeed);
+		}else{
+			speed -= acceleration * Time.deltaTime * 2;
+	        speed = Mathf.Clamp(speed, 0, maxSpeed);
+
+		}
 		if (controller.isGrounded) {
             LegAnimator.SetBool("jumping", false);
             ArmAnimator.SetBool("jumping", false);
@@ -88,42 +95,57 @@ public class Character : Singleton<Character> {
 		//Destroy (gameObject);
 	}
 
+	public void stop(){
+		active = false;
+		horizontalMove.x = 0;
+		horizontalMove.z = 0;
+	}
+	
 	public void Left(){
+		if(!active) return;
 		Move(-1,0);
 	}
 
-	public void LeftUp(){		
+	public void LeftUp(){	
+		if(!active) return;	
 		Move(-1,1);
 
 	}
 
 	public void Up(){	
+		if(!active) return;
 		Move(0,1);
 	}
 
 	public void RightUp(){
+		if(!active) return;
 		Move(1,1);
 
 	}
 
-	public void Right(){		
+	public void Right(){
+		if(!active) return;		
 		Move(1,0);
 	}
 
-	public void RightDown(){		
+	public void RightDown(){
+		if(!active) return;		
 		Move(1,-1);
 	}
 
 	public void Down(){	
+		if(!active) return;
 		Move(0,-1);		
 	}
 
 
 	public void LeftDown(){
+		if(!active) return;
 		Move(-1,-1);		
 	}
 
 	public void ButtonZ(){
+		if(!active) return;
         if (lastLeftAttack > Time.time) return;
         Debug.Log("Attack Left");
         ArmAnimator.SetBool("ataqueder", false);
@@ -142,6 +164,7 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonX(){
+		if(!active) return;
         if (lastRightAttack > Time.time) return;
         Debug.Log("Attack Right");
         bool FoundTarget = false;
@@ -160,10 +183,12 @@ public class Character : Singleton<Character> {
 	}
 
 	public void ButtonC(){
+		if(!active) return;
         Jump();
 	}
 
 	public void ButtonV(){
+		if(!active) return;
 		//leave britney alone
 		Application.Quit();
 	}
