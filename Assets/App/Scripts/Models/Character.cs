@@ -96,7 +96,7 @@ public class Character : Singleton<Character> {
 	public void kill(){
 		_active = false;
 		ArmAnimator.speed = 0;
-
+		transform.localEulerAngles  = new Vector3(0,0,-90);
 		transform.eulerAngles = new Vector3(0,0,-90);
 
 	}
